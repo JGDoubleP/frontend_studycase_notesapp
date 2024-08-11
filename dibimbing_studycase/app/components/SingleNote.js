@@ -1,36 +1,42 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Text, Stack, Heading, Divider, ButtonGroup, Button } from '@chakra-ui/react'
 
 const SingleNote = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null; // Prevent rendering on the server
+  }
+
   return (
-    <div>
-        <Card maxW='sm'>
+      <Card maxW='sm'>
         <CardBody>
-            <Stack mt='6' spacing='3'>
-            <Heading size='md'>Title</Heading>
+          <Stack mt='6' spacing='3'>
+            <Heading size='md'>Title 2</Heading>
             <Text>
-                hello
+              Body
             </Text>
-            <Text color='blue.600' fontSize='2xl'>
-                $450
-            </Text>
-            </Stack>
+          </Stack>
         </CardBody>
         <Divider />
         <CardFooter>
-            <ButtonGroup spacing='2'>
+          <ButtonGroup spacing='2'>
             <Button variant='solid' colorScheme='blue'>
-                Buy now
+              Delete
             </Button>
             <Button variant='ghost' colorScheme='blue'>
-                Add to cart
+              Edit
             </Button>
-            </ButtonGroup>
+          </ButtonGroup>
         </CardFooter>
-        </Card>
-    </div>
-  )
+      </Card>
+  );
 }
 
 export default SingleNote;
