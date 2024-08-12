@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import pool from './db.mjs';  // Import the pool from your database connection file
+import { notes } from "./dummy data/data.js";
 
 const typeDefs = `#graphql
 type Note {
@@ -28,9 +29,8 @@ const resolvers = {
             const res = await pool.query('SELECT * FROM notes WHERE id = $1', [args.id]);
             return res.rows[0] || null;
         },
-        getAllNotes: async () => {
-            const res = await pool.query('SELECT * FROM notes');
-            return res.rows;
+        getAllNotes: () => {
+            return notes;
         }
     },
     Mutation: {
