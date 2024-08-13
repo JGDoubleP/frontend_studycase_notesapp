@@ -20,6 +20,8 @@ type Query {
 # Mutations
 type Mutation {
     createNote(id: String!, title: String!, body: String): Note
+    deleteNote(id: String!): Boolean
+    editNote(id: String!, title: String!, body: String): Note
 }
 `;
 
@@ -47,7 +49,20 @@ const resolvers = {
                 [newNote.id, newNote.title, newNote.body, newNote.CreatedAt]
             );
             return res.rows[0];
-        }
+        },
+        deleteNote: async (parent, args) => {
+            const res = await pool.query('DELETE FROM notes WHERE id = $1', [args.id]);
+            return res.rowCount > 0;
+        },
+        editNote: async (parent, args) => {
+            const { id, title, body } = args;
+            const res = await pool.query(
+                'UPDATE notes SET title = $1, body = $2 WHERE id = $3 RETURNING *',
+                [title, body, id]
+            );
+            return res.rows[0];
+        },
+
     }
 };
 
