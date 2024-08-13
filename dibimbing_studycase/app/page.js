@@ -8,9 +8,9 @@ import AddNote from './components/AddNote';
 
 // Define the GraphQL query
 const GET_ALL_NOTES = gql`
-  query ExampleQuery {
+  query notesApp {
     getAllNotes {
-      CreatedAt
+      createdat 
       body
       id
       title
@@ -38,7 +38,7 @@ const NoteList = () => {
           <Divider />
           <CardFooter>
             <Stack>
-              <Text fontSize='xs'>Created At: {new Date(note.CreatedAt).toLocaleString()}</Text>
+              <Text fontSize='xs'>Created At: {new Date(note.createdat).toLocaleString()}</Text>
               <ButtonGroup spacing='2'>
                 <Button variant='solid' colorScheme='blue'>Delete</Button>
                 <Button variant='ghost' colorScheme='blue'>Edit</Button>

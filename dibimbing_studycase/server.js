@@ -8,7 +8,7 @@ type Note {
     id: String!
     title: String!
     body: String
-    CreatedAt: String!
+    createdat: String
 }
 
 # Queries
@@ -29,8 +29,9 @@ const resolvers = {
             const res = await pool.query('SELECT * FROM notes WHERE id = $1', [args.id]);
             return res.rows[0] || null;
         },
-        getAllNotes: () => {
-            return notes;
+        getAllNotes: async () => {
+            const res = await pool.query('SELECT * FROM notes');
+            return res.rows;
         }
     },
     Mutation: {
