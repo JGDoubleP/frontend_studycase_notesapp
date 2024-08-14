@@ -61,7 +61,7 @@ const NoteList = () => {
               <Text fontSize='xs'>Created At: {new Date(note.createdat).toLocaleString()}</Text>
               <ButtonGroup spacing='2'>
                 <Button onClick={() => handleDelete(note.id)} variant='solid' colorScheme='blue'>Delete</Button>
-                <EditNote/>
+                <EditNote note={note}/>
               </ButtonGroup>
             </Stack>
           </CardFooter>
