@@ -1,7 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import pool from './db.mjs';  // Import the pool from your database connection file
-import { notes } from "./dummy data/data.js";
+import pool from '../db.mjs';  // Import the pool from your database connection file
 
 const typeDefs = `#graphql
 type Note {
