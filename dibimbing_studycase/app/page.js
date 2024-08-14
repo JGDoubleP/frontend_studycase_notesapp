@@ -86,7 +86,7 @@ const NoteList = () => {
               <Stack>
                 <Text fontSize='xs'>Created At: {new Date(note.createdat).toLocaleString()}</Text>
                 <ButtonGroup spacing='2'>
-                  <Button onClick={(e) => { e.stopPropagation(); handleDelete(note.id); }} variant='solid' colorScheme='blue'>Delete</Button>
+                  <Button onClick={(e) => { e.stopPropagation(); handleDelete(note.id); }} variant='solid' colorScheme='red'>Delete</Button>
                   <EditNote note={note} />
                 </ButtonGroup>
               </Stack>
@@ -109,7 +109,7 @@ const NoteList = () => {
               <Button colorScheme='blue' mr={3} onClick={onClose}>
                 Close
               </Button>
-              <EditNote note={selectedNote} />
+              <Button onClick={(e) => { e.stopPropagation(); handleDelete(selectedNote.id); }} variant='solid' colorScheme='red'>Delete</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
