@@ -1,7 +1,27 @@
 'use client';
 
-import React from 'react';
-import { ChakraProvider, Card, CardHeader, CardBody, CardFooter, Text, Stack, Heading, Divider, ButtonGroup, Button } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import {
+  ChakraProvider,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Text,
+  Stack,
+  Heading,
+  Divider,
+  ButtonGroup,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { ApolloProvider, useQuery, gql, useMutation } from '@apollo/client';
 import client from './apollo-client';
 import AddNote from './components/AddNote';
@@ -25,11 +45,11 @@ const DELETE_NOTE = gql`
   }
 `;
 
-
-// Component to fetch and display notes
 const NoteList = () => {
-  const { loading, error, data, refetch  } = useQuery(GET_ALL_NOTES);
+  const { loading, error, data, refetch } = useQuery(GET_ALL_NOTES);
   const [deleteNote] = useMutation(DELETE_NOTE);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedNote, setSelectedNote] = useState(null);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -45,29 +65,56 @@ const NoteList = () => {
     }
   };
 
+  const handleCardClick = (note) => {
+    setSelectedNote(note);
+    onOpen();
+  };
+
   return (
-    <div className='grid grid-cols-3 gap-3 h-4/5 overflow-auto'>
-      {data.getAllNotes.map(note => (
-        <Card key={note.id} maxW='sm'>
-          <CardBody>
-            <Stack mt='6' spacing='3'>
-              <Heading size='md'>{note.title}</Heading>
-              <Text>{note.body}</Text>
-            </Stack>
-          </CardBody>
-          <Divider/>
-          <CardFooter>
-            <Stack>
-              <Text fontSize='xs'>Created At: {new Date(note.createdat).toLocaleString()}</Text>
-              <ButtonGroup spacing='2'>
-                <Button onClick={() => handleDelete(note.id)} variant='solid' colorScheme='blue'>Delete</Button>
-                <EditNote note={note}/>
-              </ButtonGroup>
-            </Stack>
-          </CardFooter>
-        </Card>
-      ))}
-    </div>
+    <>
+      <div className='grid grid-cols-3 gap-3 h-4/5 overflow-auto'>
+        {data.getAllNotes.map(note => (
+          <Card key={note.id} maxW='sm' onClick={() => handleCardClick(note)}>
+            <CardBody>
+              <Stack mt='6' spacing='3'>
+                <Heading size='md'>{note.title}</Heading>
+                <Text>{note.body}</Text>
+              </Stack>
+            </CardBody>
+            <Divider />
+            <CardFooter>
+              <Stack>
+                <Text fontSize='xs'>Created At: {new Date(note.createdat).toLocaleString()}</Text>
+                <ButtonGroup spacing='2'>
+                  <Button onClick={(e) => { e.stopPropagation(); handleDelete(note.id); }} variant='solid' colorScheme='blue'>Delete</Button>
+                  <EditNote note={note} />
+                </ButtonGroup>
+              </Stack>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+
+      {selectedNote && (
+        <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>{selectedNote.title}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>{selectedNote.body}</Text>
+              <Text fontSize='xs' mt='4'>Created At: {new Date(selectedNote.createdat).toLocaleString()}</Text>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme='blue' mr={3} onClick={onClose}>
+                Close
+              </Button>
+              <EditNote note={selectedNote} />
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
+    </>
   );
 };
 
