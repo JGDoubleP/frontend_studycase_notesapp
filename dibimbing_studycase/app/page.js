@@ -74,8 +74,8 @@ const NoteList = () => {
     <>
       <div className='grid grid-cols-3 gap-3 h-4/5 overflow-auto'>
         {data.getAllNotes.map(note => (
-          <Card key={note.id} maxW='sm' onClick={() => handleCardClick(note)}>
-            <CardBody>
+          <Card key={note.id} maxW='sm'>
+            <CardBody onClick={() => handleCardClick(note)}>
               <Stack mt='6' spacing='3'>
                 <Heading size='md'>{note.title}</Heading>
                 <Text>{note.body}</Text>

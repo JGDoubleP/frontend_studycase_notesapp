@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 const apolloclient = new ApolloClient({
-  uri: 'http://localhost:4000',  // Replace with your GraphQL server URL
+  uri: 'https://notes-server-8xhf.onrender.com',  // Replace with your GraphQL server URL
   cache: new InMemoryCache(),
 });
 
