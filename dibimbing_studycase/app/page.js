@@ -54,6 +54,10 @@ const NoteList = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+  if (data.getAllNotes.length === 0) {
+    return <p>Tidak ada catatan</p>;
+  }
+
   const handleDelete = async (id) => {
     try {
       await deleteNote({
